@@ -1,0 +1,72 @@
+{
+	"compiler": {
+		"version": "0.8.31+commit.fd3a2265"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "foo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "myUint",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Week 3 Assignments - Solidity/StateVariable.sol": "StateVariables"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Week 3 Assignments - Solidity/StateVariable.sol": {
+			"keccak256": "0x1462106227bfc7c1ed78a99f2ca33ebf916b4b1c6a873a86e040f2707d0961e8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1d362563680a294ec0868ac0e1ac261180f408300fe7f53cf8d27aab78bd3524",
+				"dweb:/ipfs/QmcwBhgoYrrtJmYWg64FczV9uqAXisiUYLw6rtYqQR3LQZ"
+			]
+		}
+	},
+	"version": 1
+}
