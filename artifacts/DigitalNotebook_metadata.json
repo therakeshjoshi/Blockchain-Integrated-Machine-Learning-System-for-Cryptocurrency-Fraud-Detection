@@ -1,0 +1,72 @@
+{
+	"compiler": {
+		"version": "0.8.31+commit.fd3a2265"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_note",
+						"type": "string"
+					}
+				],
+				"name": "addNote",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getMyNotes",
+				"outputs": [
+					{
+						"internalType": "string[]",
+						"name": "",
+						"type": "string[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Week 3 Assignments - Solidity/DigitalNotebookSmartContract.sol": "DigitalNotebook"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Week 3 Assignments - Solidity/DigitalNotebookSmartContract.sol": {
+			"keccak256": "0x598dad0702beb4874588df7c3b10ae5485a0a386ed2a5e3b68fadebf8d0b19f9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d15be66d6f2f5b7b704c1c128c08138a93bf90271ef64c33112e14963a7ab198",
+				"dweb:/ipfs/QmTGpToShPu1nSjL58TK3Ha9BTD9oDH1iS9hpMw9ZGeJYN"
+			]
+		}
+	},
+	"version": 1
+}
