@@ -9,7 +9,7 @@
 				"inputs": [
 					{
 						"internalType": "string",
-						"name": "_note",
+						"name": "_message",
 						"type": "string"
 					}
 				],
@@ -20,12 +20,37 @@
 			},
 			{
 				"inputs": [],
-				"name": "getMyNotes",
+				"name": "getNotes",
 				"outputs": [
 					{
-						"internalType": "string[]",
+						"components": [
+							{
+								"internalType": "string",
+								"name": "message",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct DigitalNotebook.Note[]",
 						"name": "",
-						"type": "string[]"
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalNotes",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -45,7 +70,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Week 3 Assignments - Solidity/DigitalNotebookSmartContract.sol": "DigitalNotebook"
+			"Week 3 Assignments - Solidity/DigitalNotebook.sol": "DigitalNotebook"
 		},
 		"evmVersion": "osaka",
 		"libraries": {},
@@ -59,12 +84,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"Week 3 Assignments - Solidity/DigitalNotebookSmartContract.sol": {
-			"keccak256": "0x598dad0702beb4874588df7c3b10ae5485a0a386ed2a5e3b68fadebf8d0b19f9",
+		"Week 3 Assignments - Solidity/DigitalNotebook.sol": {
+			"keccak256": "0xb370f111daf1e1135eb48332d7692212efa3346c9064397b3591b7dedd1ed2fd",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d15be66d6f2f5b7b704c1c128c08138a93bf90271ef64c33112e14963a7ab198",
-				"dweb:/ipfs/QmTGpToShPu1nSjL58TK3Ha9BTD9oDH1iS9hpMw9ZGeJYN"
+				"bzz-raw://a510eb489ab7cc3ab5d8fe00247d150cfbef046432e40f49e0ea55bd3c5d052c",
+				"dweb:/ipfs/QmZmJ9TWAa86tDQVV5xWMEPiCoF1jv8GcLwkyiHeGVn9jG"
 			]
 		}
 	},
