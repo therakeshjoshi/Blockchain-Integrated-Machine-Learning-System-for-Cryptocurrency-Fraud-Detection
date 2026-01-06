@@ -1,7 +1,7 @@
 
 # Blockchain Integrated Machine Learning System for Cryptocurrency Fraud Detection
 ### Midterm Progress Report (Weeks 1–3)
-
+ 
 ![Status](https://img.shields.io/badge/Status-Phase%201%20Learning%20%26%20Prototyping-success)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![Solidity](https://img.shields.io/badge/Solidity-0.8-lightgrey)
