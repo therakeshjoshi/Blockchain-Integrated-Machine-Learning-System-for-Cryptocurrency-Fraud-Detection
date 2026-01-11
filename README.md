@@ -51,12 +51,6 @@ The FraudRegistry.sol contract acts as the immutable registry.
 ## Installation & Setup
 
 ### Prerequisites
-* Python 3.8+
-* MetaMask Wallet (funded with Sepolia ETH)
-* Alchemy/Infura RPC URL
-## Installation & Setup
-
-### Prerequisites
 # - Python 3.8+
 # - MetaMask Wallet (funded with Sepolia ETH)
 # - Alchemy or Infura RPC URL
