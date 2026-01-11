@@ -1,76 +1,97 @@
 
-# Blockchain-Integrated Machine Learning System for Cryptocurrency Fraud Detection
+# Technical README
 
-## Project Overview
-This repository contains a production-style implementation of a fraud detection system that integrates machine learning inference with blockchain-based auditability. A supervised learning model is trained on Ethereum transaction data to classify fraudulent activity. Each prediction is cryptographically hashed and immutably recorded on the Ethereum Sepolia test network using a Solidity smart contract.
-
----
-
-## Technology Stack
-
-- Python 3.10+
-- Pandas, NumPy
-- Scikit-learn, XGBoost
-- FastAPI
-- Streamlit
-- Web3.py
-- Solidity ^0.8.0
-- Ethereum Sepolia Testnet (Chain ID: 11155111)
+## Project: Blockchain Integrated Machine Learning System for Cryptocurrency Fraud Detection
 
 ---
 
-## Repository Structure
+## System Objective
 
-.
-├── training_model.ipynb
-├── first_order_df.csv
-├── random_forest_fraud_model.pkl
-├── fraudRegistry.sol
-├── hasher.py
-├── main.py
-├── app.py
-├── .env.example
-└── README.md
+Build a production-style system where machine learning performs fraud classification on cryptocurrency transactions and blockchain guarantees immutable storage of the prediction output for audit and verification.
 
 ---
 
-## Machine Learning Pipeline
+## Architecture Overview
 
-### Dataset
-- Total records: 254,973
-- Features: BlockHeight, TimeStamp, Value
-- Target: isError (0/1)
-- Fraud ratio: ~6.13%
+Pipeline:
 
-### Preprocessing
-- Dropped: TxHash, From, To, Index, Unnamed
-- Filled missing values with zero
-- Removed zero-variance features
-- Train-test split: 80/20 (stratified)
+Input Transaction  
+→ Feature Formatting  
+→ ML Inference  
+→ Probability Scoring  
+→ SHA-256 Hashing  
+→ Smart Contract Call  
+→ Ethereum Sepolia Blockchain  
+→ Etherscan Verification  
 
-### Model Training
-Models evaluated:
-- Logistic Regression (balanced)
-- Random Forest (balanced)
-- XGBoost (scale_pos_weight)
-
-Metrics:
-- Accuracy, Precision, Recall, F1, ROC-AUC
-
-Selected Model:
-- Random Forest
-- n_estimators=100
-- class_weight=balanced
-- F1 ≈ 0.8163
-
-Export:
-random_forest_fraud_model.pkl
+System Layers:
+- Machine Learning Layer (Fraud Prediction)
+- Hashing Layer (Data Fingerprinting)
+- Blockchain Layer (Immutable Storage)
+- Application Layer (API + UI)
 
 ---
 
-## Smart Contract (fraudRegistry.sol)
+## Data and Features
 
-### Struct
+Dataset: Ethereum transaction records  
+Total Rows: 254,973  
+
+Final Features Used:
+- BlockHeight
+- TimeStamp
+- Value
+
+Target Variable:
+- isError (0 = Legit, 1 = Fraud)
+
+Class Distribution:
+- Fraud ≈ 6.13%
+- Legit ≈ 93.87%
+
+---
+
+## Preprocessing
+
+- Drop non-numeric and identifier columns  
+- Remove wallet addresses and hashes  
+- Fill missing values with 0  
+- Remove zero-variance features  
+- Normalize feature types  
+- Stratified 80/20 train-test split  
+
+---
+
+## Model Training
+
+Models Evaluated:
+- Logistic Regression  
+- Random Forest  
+- XGBoost  
+
+Evaluation Metrics:
+- Accuracy  
+- Precision  
+- Recall  
+- F1-Score  
+- ROC-AUC  
+
+Best Model:
+- Random Forest  
+- n_estimators = 100  
+- class_weight = balanced  
+- F1 ≈ 0.8163  
+
+Model Export:
+random_forest_fraud_model.pkl  
+
+---
+
+## Smart Contract Design
+
+File: fraudRegistry.sol  
+
+Record Structure:
 FraudRecord {
   bool isFraud;
   uint256 riskScore;
@@ -80,103 +101,167 @@ FraudRecord {
   bool exists;
 }
 
-### Storage
+Storage:
 mapping(bytes32 => FraudRecord) registry;
 
-### Functions
-addRecord(bytes32, bool, uint256, string)
-getRecord(bytes32)
+Functions:
+addRecord(bytes32 dataHash, bool isFraud, uint256 riskScore, string modelUsed)  
+getRecord(bytes32 dataHash)  
 
-### Network
-- Sepolia Testnet
-- Chain ID: 11155111
+Properties:
+- Duplicate hash prevention  
+- Immutable record storage  
+- Public visibility  
 
----
-
-## Hashing (hasher.py)
-
-SHA256(sorted JSON(transaction_data))
-Output: 0x + 64 hex characters
+Network:
+Ethereum Sepolia Testnet  
+Chain ID: 11155111  
 
 ---
 
-## Backend (main.py)
+## Hashing Logic
 
-Framework:
-- FastAPI + Web3.py
+File: hasher.py  
 
-Model Load:
-joblib.load("random_forest_fraud_model.pkl")
-
-Endpoint:
-POST /analyze
-
-Input:
-timestamp: int
-value: float
-min_val_received: float
-total_transactions: int
+Method:
+- Convert input to sorted JSON  
+- Encode as UTF-8  
+- Apply SHA-256  
+- Prefix with "0x"  
 
 Output:
-is_fraud
-confidence
-hash
-etherscan_link
+0x + 64 hex characters  
 
-Blockchain:
-- Sepolia RPC
-- PoA middleware
-- Local signing with PRIVATE_KEY
-- Contract call: addRecord()
+Ensures:
+- Deterministic fingerprint  
+- Tamper detection  
+- Blockchain compatibility  
 
 ---
 
-## Frontend (app.py)
+## Backend API
 
-Framework:
-- Streamlit
+File: main.py  
+Framework: FastAPI + Web3.py  
 
-Features:
-- Transaction input form
-- Local ML inference
-- Blockchain write
-- Etherscan link display
+Responsibilities:
+- Load trained ML model  
+- Accept transaction data  
+- Predict fraud and confidence  
+- Generate SHA-256 hash  
+- Build blockchain transaction  
+- Sign with PRIVATE_KEY  
+- Send to Sepolia  
 
-Safety:
-- Forced Sepolia RPC
-- Chain ID check: 11155111
-- Self-healing model fallback
+Endpoint:
+POST /analyze  
 
----
+Input Fields:
+timestamp  
+value  
+min_val_received  
+total_transactions  
 
-## Environment
+Output:
+is_fraud  
+confidence  
+hash  
+etherscan_link  
 
-.env
-RPC_URL=
-PRIVATE_KEY=
-CONTRACT_ADDRESS=
-
----
-
-## Installation
-
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
----
-
-## Run
-
-Backend:
-python main.py
-
-Frontend:
-streamlit run app.py
+Blockchain Configuration:
+- Sepolia RPC  
+- PoA middleware injection  
+- Chain ID validation  
+- Contract function: addRecord()  
 
 ---
 
-## Flow
+## Frontend
 
-User Input → ML Prediction → SHA256 → Smart Contract → Sepolia → Etherscan
-```
+File: app.py  
+Framework: Streamlit  
+
+Responsibilities:
+- User input interface  
+- Local ML prediction  
+- Blockchain transaction execution  
+- Display transaction status and Etherscan link  
+
+Safety Mechanisms:
+- Forced Sepolia RPC  
+- Chain ID verification (11155111)  
+- Self-healing model fallback if file missing  
+
+---
+
+## Environment Configuration
+
+Create .env file:
+
+RPC_URL=your_sepolia_rpc  
+PRIVATE_KEY=your_wallet_private_key  
+CONTRACT_ADDRESS=your_deployed_contract  
+
+Never commit private keys.
+
+---
+
+## Installation Guide
+
+### 1. Clone Repository
+
+git clone <repo-url>  
+cd <repo-name>  
+
+### 2. Create Virtual Environment
+
+python -m venv venv  
+source venv/bin/activate  
+# Windows: venv\Scripts\activate  
+
+### 3. Install Dependencies
+
+pip install -r requirements.txt  
+
+---
+
+## Running the System
+
+### Backend
+
+python main.py  
+
+Runs API at:
+http://127.0.0.1:8000  
+
+### Frontend
+
+streamlit run app.py  
+
+Access UI at:
+http://localhost:8501  
+
+---
+
+## Deployment Flow
+
+1. User submits transaction through UI  
+2. ML model predicts fraud  
+3. Input hashed with SHA-256  
+4. Prediction sent to smart contract  
+5. Transaction mined on Sepolia  
+6. User verifies via Etherscan  
+
+---
+
+## Verification
+
+Each blockchain record contains:
+- Data hash  
+- Fraud label  
+- Confidence score  
+- Model identifier  
+- Reporter address  
+
+All records are immutable and publicly auditable.
+
