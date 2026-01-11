@@ -1,37 +1,172 @@
 
 # Blockchain Integrated Machine Learning System for Cryptocurrency Fraud Detection
-### Midterm Progress Report (Weeks 1–3)
- 
-![Status](https://img.shields.io/badge/Status-Phase%201%20Learning%20%26%20Prototyping-success)
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![Solidity](https://img.shields.io/badge/Solidity-0.8-lightgrey)
-![Platform](https://img.shields.io/badge/Platform-Jupyter%20%7C%20Remix-orange)
 
 ##  Project Overview
 This repository documents the development of a **Blockchain-Integrated Machine Learning System** designed to detect and record fraudulent transactions.
 
-**Current Submission Status:**
-This midterm report covers **Phase 1 (Foundations & Component Learning)**. The repository currently hosts the learning modules for Data Analysis (Week 1) and Solidity Smart Contract development (Week 3), which are the building blocks for the final system.
+# Ethereum Fraud Detection: AI + Blockchain Audit
 
-##  Repository Structure
+## Stack
+- Python 3.10+
+- Pandas, NumPy, Scikit-learn, XGBoost
+- FastAPI
+- Streamlit
+- Web3.py
+- Solidity ^0.8.0
+- Ethereum Sepolia Testnet
 
-The project is organized by weekly learning modules:
+---
 
-```text
-├── Week 1 Assignment - Data Analysis/
-│   ├── Learning-Complete-Data-Analysis.ipynb  # Comprehensive EDA, Cleaning, and Preprocessing steps
-│   └── Messy_Employment_India_Dataset.csv     # Sample dataset used for mastering data cleaning techniques
-├── Week 3 Assignments - Solidity/
-│   ├── DigitalNotebook.sol                    # MAIN ASSIGNMENT: Prototype for immutable data storage
-│   ├── DigitalNotebookSmartContract.sol       # Contract variation
-│   ├── HelloWorld.sol                         # Basic contract structure
-│   ├── StateVariable.sol                      # Learning state persistence
-│   ├── Mapping.sol                            # Key-value storage logic (crucial for user registries)
-│   ├── Struct.sol                             # Custom data structures
-│   ├── Array.sol                              # Handling lists of data
-│   ├── Func.sol                               # Function syntax
-│   ├── ViewAndPureFunc.sol                    # Gas optimization concepts
-│   ├── iterableMapping.sol                    # Advanced mapping techniques
-│   └── valueTypes.sol                         # Solidity data types
-├── artifacts/                                 # Compiled contract artifacts
-└── README.md                                  # Project documentation
+## Structure
+
+.
+├── training_model.ipynb  
+├── first_order_df.csv  
+├── random_forest_fraud_model.pkl  
+├── fraudRegistry.sol  
+├── hasher.py  
+├── main.py  
+├── app.py  
+├── .env.example  
+└── README.md  
+
+---
+
+## ML Pipeline
+
+### Dataset
+- Rows: 254,973  
+- Features: BlockHeight, TimeStamp, Value  
+- Target: isError (0/1)  
+- Fraud ratio: ~6.13%
+
+### Preprocessing
+- Drop: TxHash, From, To, Index, Unnamed  
+- Fill NA: 0  
+- Remove zero-variance features  
+- Train-test split: 80/20 (stratified)
+
+### Models
+- Logistic Regression  
+- Random Forest  
+- XGBoost  
+
+### Selected Model
+- Random Forest  
+- n_estimators=100  
+- class_weight=balanced  
+- F1 ≈ 0.8163  
+
+### Export
+random_forest_fraud_model.pkl
+
+---
+
+## Smart Contract (fraudRegistry.sol)
+
+### Struct
+FraudRecord {
+  bool isFraud;
+  uint256 riskScore;
+  uint256 timestamp;
+  string modelUsed;
+  address reporter;
+  bool exists;
+}
+
+### Storage
+mapping(bytes32 => FraudRecord) registry;
+
+### Functions
+addRecord(bytes32, bool, uint256, string)  
+getRecord(bytes32)  
+
+### Network
+- Sepolia Testnet  
+- Chain ID: 11155111  
+
+---
+
+## Hashing (hasher.py)
+
+SHA256(sorted JSON(transaction_data))  
+Output: 0x + 64 hex characters  
+
+---
+
+## Backend (main.py)
+
+### Framework
+FastAPI + Web3.py  
+
+### Load
+joblib.load("random_forest_fraud_model.pkl")  
+
+### Endpoint
+POST /analyze  
+
+### Input
+timestamp: int  
+value: float  
+min_val_received: float  
+total_transactions: int  
+
+### Output
+is_fraud  
+confidence  
+hash  
+etherscan_link  
+
+### Blockchain
+- Sepolia RPC  
+- PoA middleware  
+- Local signing using PRIVATE_KEY  
+- Contract call: addRecord()  
+
+---
+
+## Frontend (app.py)
+
+### Framework
+Streamlit  
+
+### Features
+- User input form  
+- Local ML prediction  
+- Blockchain write  
+- Etherscan link display  
+
+### Safety
+- Forced Sepolia RPC  
+- Chain ID check: 11155111  
+- Self-healing model fallback  
+
+---
+
+## Environment
+
+.env  
+RPC_URL=  
+PRIVATE_KEY=  
+CONTRACT_ADDRESS=  
+
+---
+
+## Install
+
+python -m venv venv  
+source venv/bin/activate  
+pip install -r requirements.txt  
+
+---
+
+## Run
+
+Backend:  
+python main.py  
+
+Frontend:  
+streamlit run app.py  
+
+---
+
