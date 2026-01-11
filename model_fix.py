@@ -1,7 +1,7 @@
 import joblib
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import make_classification
-import pandas as pd
+import pandas as pd 
 
 # Create compatible dummy data
 X, y = make_classification(n_samples=100, n_features=4, random_state=42)
