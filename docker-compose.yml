@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  mlflow:
+    image: python:3.10-slim
+    container_name: fraud-mlflow
+    working_dir: /mlflow
+    command: >
+      bash -c "pip install --no-cache-dir mlflow==2.15.1 &&
+               mlflow server --host 0.0.0.0 --port 5000
+               --backend-store-uri sqlite:///mlflow.db
+               --default-artifact-root /mlflow/artifacts"
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_data:/mlflow
+
+  fraud-api:
+    build: .
+    container_name: fraud-api
+    depends_on:
+      - mlflow
+    ports:
+      - "8000:8000"
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      # - MLFLOW_MODEL_URI=models:/fraud_random_forest/Production
+      - MODEL_PATH=/app/random_forest_fraud_model.pkl
+    restart: unless-stopped
+
+volumes:
+  mlflow_data:
